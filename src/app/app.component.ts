@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: `
+  <ul>
+    <li *ngFor="let item of items | async">
+       {{  item.name }}
+    </li>
+  </ul>
+  `,
 })
 export class AppComponent {
-  title = 'app works!';
+  items: FirebaseListObservable<any>;
+  constructor(af: AngularFire) {
+    this.items = af.database.list('/hero');
+  }
 }
